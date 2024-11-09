@@ -44,7 +44,7 @@ function startTimer() {
   document.getElementById("timer_button").innerHTML = timerState;
 }
 
-var car, lightSigns=[], walls=[0, 0, 0, 0];
+var car, lightSigns=[], walls=[0, 0, 0, 0], parkingPos;
 
 function carInWall() {
   return walls[car.side] == 1 && (car.position == 0 || car.position == 3);
@@ -76,25 +76,40 @@ function randomizer() {
     };
   }
 
+  // parking can have 4 different positions, 2 on the x axis and 2 on the y axis
+
+  parkingPos = Math.floor(Math.random() * 4);
+
   for(let i = 0; i < 4; i++) {
-    let lightNo = Math.floor(Math.random() * 36);
-    if(lightNo % 2) {
-      lightSigns[i][Math.floor(Math.random() * 6)] = Math.floor(Math.random() * 2) + 1;
-    } else if(lightNo % 2 == 0) {
-      // First light
-      let upOrDown = Math.floor(Math.random() * 2);
-      if(upOrDown == 0) 
-        lightSigns[i][0] = Math.floor(Math.random() * 2) + 1;
-      else
+    if(i == parkingPos) {
+      // If the parking is in that quadrant, the light signs can only be on positions 3 - 5
+      let lightNo = Math.floor(Math.random() * 18);
+      if(lightNo % 2) {
+        lightSigns[i][Math.floor(Math.random() * 3) + 3] = Math.floor(Math.random() * 2) + 1;
+      } else if(lightNo % 2 == 0) {
         lightSigns[i][3] = Math.floor(Math.random() * 2) + 1;
-
-      // Second light
-
-      upOrDown = Math.floor(Math.random() * 2);
-      if(upOrDown == 0) 
-        lightSigns[i][2] = Math.floor(Math.random() * 2) + 1;
-      else
         lightSigns[i][5] = Math.floor(Math.random() * 2) + 1;
+      }
+    } else {
+      let lightNo = Math.floor(Math.random() * 36);
+      if(lightNo % 2) {
+        lightSigns[i][Math.floor(Math.random() * 6)] = Math.floor(Math.random() * 2) + 1;
+      } else if(lightNo % 2 == 0) {
+        // First light
+        let upOrDown = Math.floor(Math.random() * 2);
+        if(upOrDown == 0) 
+          lightSigns[i][0] = Math.floor(Math.random() * 2) + 1;
+        else
+          lightSigns[i][3] = Math.floor(Math.random() * 2) + 1;
+
+        // Second light
+
+        upOrDown = Math.floor(Math.random() * 2);
+        if(upOrDown == 0) 
+          lightSigns[i][2] = Math.floor(Math.random() * 2) + 1;
+        else
+          lightSigns[i][5] = Math.floor(Math.random() * 2) + 1;
+      }
     }
   }
 
@@ -102,8 +117,6 @@ function randomizer() {
     var quadrant = Math.floor(Math.random() * 4);
     var dir = Math.floor(Math.random() * 2) * 2 - 1;
     var pos;
-
-    console.log(dir, lightSigns[quadrant][1], lightSigns[quadrant][4]);
 
     if(dir == 1) {
       if(lightSigns[quadrant][1] == 0 && lightSigns[quadrant][4] == 0)
@@ -259,7 +272,7 @@ function renderCube(side, pos, color) {
       break;
     }
     case 2: {
-      top = 235 + 20 * (pos > 2);
+      top = 255 - 20 * (pos > 2);
       left = 95 + pos % 3 * 50;
       cubeDiv.style.setProperty('top', 'calc(10 / 320 * 100% + ' + String(top) +' / 320 * 100%)');
       cubeDiv.style.setProperty('left', 'calc(10 / 320 * 100% + ' + String(left) +' / 320 * 100%)');
@@ -316,6 +329,62 @@ function renderWalls() {
   leftWall.style.setProperty('top', 'calc(10 / 320 * 100% + ' + String(100 - 40 * walls[0]) + ' / 320 * 100%)');
 }
 
+function renderParking() {
+  // parking is just for the final round, it is composed of 2 magenta elements, of lenght 20, width 2
+  // they should be always spaced by 30 * 1.25 = 37.5
+  var parking1 = document.getElementById("parking1");
+  var parking2 = document.getElementById("parking2");
+
+  // change display of parking elements to block
+  parking1.style.setProperty('display', 'block');
+  parking2.style.setProperty('display', 'block');
+
+  if(parkingPos & 1) {
+    parking1.style.setProperty('width', 'calc(20 / 320 * 100%)');
+    parking1.style.setProperty('height', 'calc(2 / 320 * 100%)');
+    parking2.style.setProperty('width', 'calc(20 / 320 * 100%)');
+    parking2.style.setProperty('height', 'calc(2 / 320 * 100%)');
+    
+
+    if(parkingPos == 1) {
+      parking1.style.setProperty('top', 'calc(10 / 320 * 100% + 100 / 320 * 100%)');
+      parking2.style.setProperty('top', 'calc(10 / 320 * 100% + 137.5 / 320 * 100%)');
+      parking1.style.setProperty('left', 'calc(10 / 320 * 100% + 280 / 320 * 100%)');
+      parking2.style.setProperty('left', 'calc(10 / 320 * 100% + 280 / 320 * 100%)');
+    } else {
+      parking1.style.setProperty('top', 'calc(8 / 320 * 100% + 200 / 320 * 100%)');
+      parking2.style.setProperty('top', 'calc(8 / 320 * 100% + 162.5 / 320 * 100%)');
+      parking1.style.setProperty('left', 'calc(10 / 320 * 100%)');
+      parking2.style.setProperty('left', 'calc(10 / 320 * 100%)');
+    }
+  } else {
+    parking1.style.setProperty('width', 'calc(2 / 320 * 100%)');
+    parking1.style.setProperty('height', 'calc(20 / 320 * 100%)');
+    parking2.style.setProperty('width', 'calc(2 / 320 * 100%)');
+    parking2.style.setProperty('height', 'calc(20 / 320 * 100%)');
+
+    if(parkingPos == 0) {
+      parking1.style.setProperty('top', 'calc(10 / 320 * 100%)');
+      parking2.style.setProperty('top', 'calc(10 / 320 * 100%)');
+      parking1.style.setProperty('left', 'calc(10 / 320 * 100% + 100 / 320 * 100%)');
+      parking2.style.setProperty('left', 'calc(10 / 320 * 100% + 137.5 / 320 * 100%)');
+    } else {
+      parking1.style.setProperty('top', 'calc(10 / 320 * 100% + 280 / 320 * 100%)');
+      parking2.style.setProperty('top', 'calc(10 / 320 * 100% + 280 / 320 * 100%)');
+      parking1.style.setProperty('left', 'calc(8 / 320 * 100% + 200 / 320 * 100%)');
+      parking2.style.setProperty('left', 'calc(8 / 320 * 100% + 162.5 / 320 * 100%)');
+    }
+  }
+}
+
+function hideParking() {
+  var parking1 = document.getElementById("parking1");
+  var parking2 = document.getElementById("parking2");
+
+  parking1.style.setProperty('display', 'none');
+  parking2.style.setProperty('display', 'none');
+}
+
 function renderMat() {
   randomizer();
   console.log("Robot position:");
@@ -324,6 +393,7 @@ function renderMat() {
   console.log(lightSigns);
   console.log("Wall positions:");
   console.log(walls);
+  console.log("Parking position:" + parkingPos);
 
   if(round == 'Final') {
     document.querySelectorAll(".cube").forEach(Element => {
@@ -333,6 +403,7 @@ function renderMat() {
     renderRobot(car.side, car.position, car.direction);
     renderCubes();
     renderWalls();
+    renderParking();
   }
   else {
     document.querySelectorAll(".cube").forEach(Element => {
@@ -341,6 +412,7 @@ function renderMat() {
 
     renderRobot(car.side, car.position, car.direction);
     renderWalls();
+    hideParking();
   }
 }
 

@@ -8,7 +8,11 @@ html {
   color-scheme: light dark;
 }
 
-body {
+footer {
+  text-align: center;
+  padding: 3px;
+  font-size: 13px;
+  margin-top: 30px;
 }
 
 h1 {
@@ -122,6 +126,15 @@ button:hover {
 
 .cube.red-cube {
   background: red;
+}
+
+.parking {
+  /* parking is just for the final round, it is composed of 2 magenta elements, of lenght 20, width 2 */
+  position: absolute;
+  top: calc(10 / 320 * 100% + 100 / 320 * 100%);
+  left: calc(10 / 320 * 100% + 100 / 320 * 100%);
+  background: magenta;
+  display: none;
 }
 
 .wall {
