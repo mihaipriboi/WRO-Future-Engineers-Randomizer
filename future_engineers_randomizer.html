@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WRO Future Engineers - Randomizer</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>   
+  </head>
+
+  <body>
+    <h1>WRO Future Engineers - Randomizer</h1>
+
+    <div class="main-container">
+      <div class="left-container">
+        <div class="center-div">
+          <div class="button b2" id="button-10" onclick="toggleRound()">
+            <input type="checkbox" class="checkbox" />
+            <div class="knobs">
+              <span>FINAL</span>
+            </div>
+            <div class="layer"></div>
+          </div>
+          <button onclick="renderMat()">Randomize</button>
+        </div>
+      </div>
+
+      <div class="right-container" id="object-container">
+        <img id="field" src="field.png" alt="WRO-2023_FutureEngineers_Playfield">
+        <div id="robot">
+          <svg id="robot-arrow" xmlns="http://www.w3.org/2000/svg" width="70%" height="70%" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/> </svg>
+        </div>
+
+        <!-- <div class="cube red-cube"></div> -->
+
+        <div class="wall" id="top-wall"></div>
+        <div class="wall" id="right-wall"></div>
+        <div class="wall" id="bottom-wall"></div>
+        <div class="wall" id="left-wall"></div>
+      </div>
+
+      <div class="left-container">
+        <div class="center-div">
+          <h3 id="timer"><span id="timer-mmss">00:00</span> <span id="timer-ms">00</span></h3>
+          <button id="timer_button" onclick="startTimer()">Start timer</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
